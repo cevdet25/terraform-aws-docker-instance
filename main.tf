@@ -36,14 +36,14 @@ resource "aws_instance" "tfmyec2" {
   vpc_security_group_ids = [aws_security_group.tf-sec-gr.id]
   user_data = templatefile("${abspath.module}/userdata.sh", {myserver = var.server-name})
   tags = {
-    Name = var.tag
+    Name = "${var.tag}-${count.index + 1}"
   }
 }
 
 resource "aws_security_group" "tf-sec-gr" {
   name = "${var.tag}-terraform-sec-grp"
   tags = {
-    Name = "${var.tag}-${count.index + 1}"
+    Name = var.tag
   }
 
   dynamic "ingress" {
